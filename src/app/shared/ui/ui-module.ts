@@ -4,18 +4,21 @@ import { ButtonComponent } from './button/button-component/button-component';
 import { CardComponent } from './card/card.component/card.component';
 import { SectionComponent } from './section/section.component/section.component';
 import { InputComponent } from './input/input.component/input.component';
+import { HeroSection } from '../../landing-builder/components/hero-section/hero-section';
 
 
 
 @NgModule({
   declarations: [
+    
+  ],
+  imports: [
+    CommonModule,
     ButtonComponent,
     InputComponent,
     CardComponent,
     SectionComponent,
-  ],
-  imports: [
-    CommonModule
+    HeroSection,
   ],
   exports: [
     ButtonComponent,
