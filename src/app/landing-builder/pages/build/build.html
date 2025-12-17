@@ -5,10 +5,27 @@
 <lb-hero-section
     title="Ejemplo con enlace remoto"
     subtitle="Esta imagen está enlazada desde una URL absoluta"
-    buttonText="Ver ejemplo"
+    buttonText="Contactanos!!"
     whatsappNumber="573022334455"
     imageUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80">
 </lb-hero-section>
+
+<app-features-section
+seccionTitle="Beneficios del servicio"
+  [features]="[
+    { icon: '🚀', title: 'Rápido', description: 'Carga instantánea optimizada.' },
+    { icon: '📈', title: 'Convertidor', description: 'Diseño enfocado en ventas.' },
+    { icon: '🤖', title: 'Automatizado', description: 'Conecta directo a WhatsApp.' }
+  ]"
+></app-features-section>
+
+<app-cta-section
+  title="Empieza hoy mismo"
+  subtitle="Convierte visitantes en clientes con una landing optimizada para WhatsApp."
+  buttonText="Hablar ahora"
+  whatsappNumber="573022334455"
+></app-cta-section>
+
 
 
 </section>
