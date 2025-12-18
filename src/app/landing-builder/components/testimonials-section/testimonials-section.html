@@ -1,0 +1,56 @@
+<section class="w-full py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+  
+      <!-- Título -->
+      <h2 class="text-3xl md:text-5xl font-bold text-center text-primary mb-16">
+        {{ sectionTitle }}
+      </h2>
+  
+      <!-- Grid de testimonios -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+  
+        @for (testimonial of testimonials; track $index) {
+          <div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition">
+  
+            <!-- Mensaje -->
+            <p class="text-gray-600 mb-6 leading-relaxed">
+              “{{ testimonial.message }}”
+            </p>
+  
+            <!-- Usuario -->
+            <div class="flex items-center gap-4">
+  
+              <!-- Avatar -->
+              @if (testimonial.avatarUrl) {
+                <img
+                  [src]="testimonial.avatarUrl"
+                  alt="Avatar"
+                  class="w-12 h-12 rounded-full object-cover"
+                />
+              } @else {
+                <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold">
+                  {{ testimonial.name.charAt(0) }}
+                </div>
+              }
+  
+              <!-- Info -->
+              <div>
+                <p class="font-semibold text-primary">
+                  {{ testimonial.name }}
+                </p>
+                @if (testimonial.role) {
+                  <p class="text-sm text-gray-500">
+                    {{ testimonial.role }}
+                  </p>
+                }
+              </div>
+  
+            </div>
+          </div>
+        }
+  
+      </div>
+  
+    </div>
+  </section>
+  

@@ -1,0 +1,26 @@
+<section class="w-full py-20 bg-white">
+    <div class="container mx-auto px-4">
+  
+      <!-- Título -->
+      <h2 class="text-3xl md:text-5xl font-bold text-center text-primary mb-14">
+        {{ sectionTitle }}
+      </h2>
+  
+      <!-- Grid de imágenes -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+  
+        @for (image of images; track $index) {
+          <div class="overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition">
+            <img
+              [src]="image.src"
+              [alt]="image.alt || 'Imagen de galería'"
+              class="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+        }
+  
+      </div>
+  
+    </div>
+  </section>
+  
