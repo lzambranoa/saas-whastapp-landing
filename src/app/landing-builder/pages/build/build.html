@@ -1,42 +1,52 @@
-<section class="p-10">
-    <h2 class="text-3xl font-bold mb-4">Constructor de Landing</h2>
-    <p class="text-gray-600">Aquí irá el editor visual.</p>
-<!-- Ejemplo de uso con enlace absoluto de imagen remota -->
-<lb-hero-section
-    title="Ejemplo con enlace remoto"
-    subtitle="Esta imagen está enlazada desde una URL absoluta"
-    buttonText="Contactanos!!"
-    whatsappNumber="573022334455"
-    imageUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80">
-</lb-hero-section>
+<div class="flex">
 
-<app-features-section
-seccionTitle="Beneficios del servicio"
-  [features]="[
-    { icon: '🚀', title: 'Rápido', description: 'Carga instantánea optimizada.' },
-    { icon: '📈', title: 'Convertidor', description: 'Diseño enfocado en ventas.' },
-    { icon: '🤖', title: 'Automatizado', description: 'Conecta directo a WhatsApp.' }
-  ]"
-></app-features-section>
+  <!-- Preview -->
+  <div class="flex-1">
 
-<app-cta-section
-  title="Empieza hoy mismo"
-  subtitle="Convierte visitantes en clientes con una landing optimizada para WhatsApp."
-  buttonText="Hablar ahora"
-  whatsappNumber="573022334455"
-></app-cta-section>
+    @for (section of builder.sections(); track section.id) {
 
-<app-testimonials-section
-  sectionTitle="Clientes que ya confían en nosotros"
-  [testimonials]="[
-    { name: 'Ana Torres', role: 'Coach', message: 'Mis ventas aumentaron desde el primer día.' },
-    { name: 'Luis Martínez', role: 'Dueño de negocio', message: 'Todo mi tráfico va directo a WhatsApp.' }
-  ]"
-></app-testimonials-section>
+      <div (click)="builder.selectSection(section)">
 
+        @switch (section.type) {
 
-<app-gallery-section></app-gallery-section>
+          @case ('hero') {
+            @let heroProps = getHeroProps(section);
+            <app-hero-section
+              [title]="heroProps.title"
+              [subtitle]="heroProps.subtitle"
+              [buttonText]="heroProps.buttonText"
+              [whatsappNumber]="heroProps.whatsappNumber"
+              [imageUrl]="heroProps.imageUrl"
+            />
+          }
 
+          @case ('features') {
+            @let featuresProps = getFeaturesProps(section);
+            <app-features-section
+              [sectionTitle]="featuresProps.sectionTitle"
+              [items]="featuresProps.items"
+            />
+          }
 
+          @case ('cta') {
+            @let ctaProps = getCtaProps(section);
+            <app-cta-section
+              [title]="ctaProps.title"
+              [subtitle]="ctaProps.subtitle"
+              [buttonText]="ctaProps.buttonText"
+              [whatsappNumber]="ctaProps.whatsappNumber"
+            />
+          }
 
-</section>
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+  <!-- Panel lateral -->
+  <app-section-editor />
+
+</div>

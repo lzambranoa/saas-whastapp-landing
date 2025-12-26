@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'lb-hero-section',
+  selector: 'app-hero-section',
   imports: [],
   templateUrl: './hero-section.html',
   styleUrl: './hero-section.css',

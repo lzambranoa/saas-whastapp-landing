@@ -3,13 +3,13 @@
   
       <!-- Título de la sección -->
       <h2 class="text-3xl md:text-5xl font-bold text-primary mb-14">
-        {{ seccionTitle }}
+        {{ sectionTitle }}
       </h2>
   
       <!-- Grid de características -->
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
   
-        @for (feature of features; track $index) {
+        @for (feature of items; track $index) {
           <div class="p-6 rounded-2xl bg-gray-50 shadow-sm hover:shadow-lg transition border border-gray-200">
   
             <!-- Icono -->

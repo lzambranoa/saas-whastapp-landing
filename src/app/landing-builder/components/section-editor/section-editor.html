@@ -1,0 +1,34 @@
+<aside class="w-80 border-l p-4 bg-gray-50 h-screen sticky top-0">
+
+    @if (builder.selectedSection()) {
+  
+      <h3 class="font-bold text-lg mb-4">
+        Editar sección: {{ builder.selectedSection()?.type }}
+      </h3>
+  
+      @for (prop of (builder.selectedSection()?.props | keyvalue); track prop.key) {
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">
+            {{ prop.key }}
+          </label>
+  
+          <input
+            class="w-full border rounded px-3 py-2"
+            [value]="prop.value"
+            (input)="updateProp(prop.key, $any($event.target).value)"
+          />
+        </div>
+  
+      }
+  
+    } @else {
+  
+      <p class="text-gray-500">
+        Selecciona una sección para editar
+      </p>
+  
+    }
+  
+  </aside>
+  

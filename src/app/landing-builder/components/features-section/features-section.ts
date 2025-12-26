@@ -14,9 +14,9 @@ export interface FeatureItem {
 })
 export class FeaturesSection {
 
-  @Input() seccionTitle:string = "¿Porque elegirnos?";
+  @Input() sectionTitle: string = "¿Porque elegirnos?";
 
-  @Input() features: FeatureItem[] = [
+  @Input() items: FeatureItem[] = [
     {
       icon: '💬',
       title: 'Integración WhatsApp',
