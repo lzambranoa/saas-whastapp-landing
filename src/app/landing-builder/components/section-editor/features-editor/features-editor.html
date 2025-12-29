@@ -1,0 +1,41 @@
+<div>
+    <h4 class="font-semibold mb-3">Features</h4>
+
+    @for (item of items; track item.id; let i = $index) {
+      <div class="border rounded p-3 mb-4 bg-white">
+
+        <input
+          class="w-full mb-2 border px-2 py-1 rounded"
+          placeholder="Icono"
+          [value]="item.icon"
+          (input)="updateItem(i, 'icon', $any($event.target).value)"
+        />
+  
+        <input
+          class="w-full mb-2 border px-2 py-1 rounded"
+          placeholder="Título"
+          [value]="item.title"
+          (input)="updateItem(i, 'title', $any($event.target).value)"
+        />
+  
+        <textarea
+          class="w-full border px-2 py-1 rounded"
+          placeholder="Descripción"
+          (input)="updateItem(i, 'description', $any($event.target).value)"
+        >{{ item.description }}</textarea>
+  
+        <button
+          class="text-red-500 text-sm mt-2"
+          (click)="removeItem(i)">
+          Eliminar
+        </button>
+      </div>
+    }
+  
+    <button
+      class="w-full py-2 border rounded bg-gray-100 hover:bg-gray-200"
+      (click)="addItem()">
+      + Agregar feature
+    </button>
+  </div>
+  

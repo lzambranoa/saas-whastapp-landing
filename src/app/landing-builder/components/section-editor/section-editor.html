@@ -8,17 +8,27 @@
   
       @for (prop of (builder.selectedSection()?.props | keyvalue); track prop.key) {
 
+          <!-- Props simples -->
+      @if (typeof prop.value === 'string') {
         <div class="mb-4">
           <label class="block text-sm font-medium mb-1">
             {{ prop.key }}
           </label>
-  
+
           <input
             class="w-full border rounded px-3 py-2"
             [value]="prop.value"
             (input)="updateProp(prop.key, $any($event.target).value)"
           />
         </div>
+      }
+
+      <!-- Arrays u objetos -->
+      @if (typeof prop.value === 'object') {
+        <div class="mb-4 text-sm text-gray-500 italic">
+          {{ prop.key }} (editor avanzado pendiente)
+        </div>
+      }
   
       }
   
@@ -28,6 +38,14 @@
         Selecciona una sección para editar
       </p>
   
+    }
+
+    @if (builder.selectedSection()?.type === 'features') {
+      @let section = builder.selectedSection()!;
+      <app-features-editor
+        [sectionId]="section.id"
+        [items]="getFeaturesItems(section)"
+      />
     }
   
   </aside>
