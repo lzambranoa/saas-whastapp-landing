@@ -5,10 +5,12 @@ import { FeaturesSection } from '../features-section/features-section';
 import { FeaturesEditor } from './features-editor/features-editor';
 import { LandingSection, BaseSection } from '../../models/landing-section.model';
 import { FeaturesProps } from '../../models/features-section.model';
+import { HeroProps } from '../../models/hero-section.model';
+import { HeroEditor } from './hero-editor/hero-editor';
 
 @Component({
   selector: 'app-section-editor',
-  imports: [KeyValuePipe, FeaturesEditor],
+  imports: [KeyValuePipe, FeaturesEditor, HeroEditor],
   templateUrl: './section-editor.html',
   styleUrl: './section-editor.css',
 })
@@ -26,5 +28,10 @@ export class SectionEditor {
   getFeaturesItems(section: LandingSection | null | undefined): any[] {
     if (!section || section.type !== 'features') return [];
     return (section as BaseSection<FeaturesProps>).props.items;
+  }
+
+  getHeroProps(section: LandingSection | null | undefined): HeroProps | null {
+    if (!section || section.type !== 'hero') return null;
+    return (section as BaseSection<HeroProps>).props;
   }
 }

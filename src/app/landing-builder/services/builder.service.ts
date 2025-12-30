@@ -26,4 +26,8 @@ export class BuilderService {
       this.selectedSection.update(s => s ? { ...s, props: { ...s.props, ...newProps } } : s);
     }
   }
+
+  updateSections(sections: LandingSection[]) {
+    this.sections.set(sections);
+  }
 }

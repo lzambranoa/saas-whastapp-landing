@@ -47,6 +47,14 @@
         [items]="getFeaturesItems(section)"
       />
     }
-  
-  </aside>
-  
+
+    @if (builder.selectedSection()?.type === 'hero') {
+      @let section = builder.selectedSection()!;
+      @let heroProps = getHeroProps(section);
+      @if (heroProps) {
+        <app-hero-editor
+          [sectionId]="section.id"
+          [props]="heroProps"
+        />
+      }
+    }

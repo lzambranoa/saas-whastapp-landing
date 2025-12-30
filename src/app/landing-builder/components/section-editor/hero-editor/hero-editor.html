@@ -1,0 +1,46 @@
+<div>
+    <h4 class="font-semibold mb-4">Hero Section</h4>
+  
+    <label class="block text-sm mb-1">Título</label>
+    <input
+      class="w-full border rounded px-3 py-2 mb-3"
+      [value]="props.title"
+      (input)="update('title', $any($event.target).value)"
+    />
+  
+    <label class="block text-sm mb-1">Subtítulo</label>
+    <textarea
+      class="w-full border rounded px-3 py-2 mb-3"
+      (input)="update('subtitle', $any($event.target).value)"
+    >{{ props.subtitle }}</textarea>
+  
+    <label class="block text-sm mb-1">Texto del botón</label>
+    <input
+      class="w-full border rounded px-3 py-2 mb-3"
+      [value]="props.buttonText"
+      (input)="update('buttonText', $any($event.target).value)"
+    />
+  
+    <label class="block text-sm mb-1">Número de WhatsApp</label>
+    <input
+      class="w-full border rounded px-3 py-2 mb-3"
+      [value]="props.whatsappNumber"
+      (input)="update('whatsappNumber', $any($event.target).value)"
+    />
+  
+    <label class="block text-sm mb-1">URL Imagen</label>
+    <input
+      class="w-full border rounded px-3 py-2"
+      [value]="props.imageUrl"
+      (input)="update('imageUrl', $any($event.target).value)"
+    />
+  
+    @if (props.imageUrl) {
+      <img
+        [src]="props.imageUrl"
+        class="mt-4 rounded shadow"
+        alt="Preview imagen hero"
+      />
+    }
+  </div>
+  

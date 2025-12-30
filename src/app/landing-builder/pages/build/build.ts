@@ -2,30 +2,26 @@ import { Component } from '@angular/core';
 import { HeroSection } from '../../components/hero-section/hero-section';
 import { FeaturesSection } from '../../components/features-section/features-section';
 import { CtaSection } from '../../components/cta-section/cta-section';
-import { TestimonialsSection } from '../../components/testimonials-section/testimonials-section';
-import { GallerySection } from '../../components/gallery-section/gallery-section';
 import { SectionEditor } from '../../components/section-editor/section-editor';
-import { BUILDER_STATE } from '../../state/builder.state';
+import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { BuilderService } from '../../services/builder.service';
 import { LandingSection, BaseSection } from '../../models/landing-section.model';
 import { HeroProps } from '../../models/hero-section.model';
 import { FeaturesProps } from '../../models/features-section.model';
 import { CtaProps } from '../../models/cta-section.model';
-import { BuilderService } from '../../services/builder.service';
 
 @Component({
   selector: 'app-build',
   imports: [HeroSection, 
             FeaturesSection, 
             CtaSection, 
-            SectionEditor],
+            DragDropModule],
   templateUrl: './build.html',
   styleUrl: './build.css',
 })
 export class BuildPage {
 
-  constructor(public builder: BuilderService){}
-  
-  sections: LandingSection[] = BUILDER_STATE.sections;
+  constructor(public builder: BuilderService) {}
 
   getHeroProps(section: LandingSection): HeroProps {
     return (section as BaseSection<HeroProps>).props;
@@ -37,5 +33,27 @@ export class BuildPage {
 
   getCtaProps(section: LandingSection): CtaProps {
     return (section as BaseSection<CtaProps>).props;
+  }
+
+  /**
+   * Reordena las secciones del landing
+   */
+  onSectionDrop(event: CdkDragDrop<any[]>) {
+    if (event.previousIndex === event.currentIndex) {
+      return;
+    }
+
+    const sections = [...this.builder.sections()];
+    moveItemInArray(sections, event.previousIndex, event.currentIndex);
+    this.builder.sections.set(sections);
+
+    // Mantener selección después del reorder
+    const selectedId = this.builder.selectedSection()?.id;
+    if (selectedId) {
+      const found = sections.find(s => s.id === selectedId);
+      if (found) {
+        this.builder.selectSection(found);
+      }
+    }
   }
 }

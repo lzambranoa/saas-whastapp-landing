@@ -1,52 +1,68 @@
-<div class="flex">
+<div
+  cdkDropList
+  (cdkDropListDropped)="onSectionDrop($event)"
+  class="space-y-6"
+>
 
-  <!-- Preview -->
-  <div class="flex-1">
+  @for (section of builder.sections(); track section.id) {
 
-    @for (section of builder.sections(); track section.id) {
+    <div
+      cdkDrag
+      class="relative border rounded-xl bg-white shadow-sm"
+      (click)="builder.selectSection(section)"
+      [class.ring-2]="builder.selectedSection()?.id === section.id"
+      [class.ring-primary]="builder.selectedSection()?.id === section.id"
+    >
 
-      <div (click)="builder.selectSection(section)">
-
-        @switch (section.type) {
-
-          @case ('hero') {
-            @let heroProps = getHeroProps(section);
-            <app-hero-section
-              [title]="heroProps.title"
-              [subtitle]="heroProps.subtitle"
-              [buttonText]="heroProps.buttonText"
-              [whatsappNumber]="heroProps.whatsappNumber"
-              [imageUrl]="heroProps.imageUrl"
-            />
-          }
-
-          @case ('features') {
-            @let featuresProps = getFeaturesProps(section);
-            <app-features-section
-              [sectionTitle]="featuresProps.sectionTitle"
-              [items]="featuresProps.items"
-            />
-          }
-
-          @case ('cta') {
-            @let ctaProps = getCtaProps(section);
-            <app-cta-section
-              [title]="ctaProps.title"
-              [subtitle]="ctaProps.subtitle"
-              [buttonText]="ctaProps.buttonText"
-              [whatsappNumber]="ctaProps.whatsappNumber"
-            />
-          }
-
-        }
-
+      <!-- Handle visual -->
+      <div
+        class="absolute top-4 left-0 -translate-x-1/2
+        bg-gray-100 border text-gray-600
+        px-2 py-1 rounded-md cursor-move
+        shadow-sm"
+      >
+        ☰
       </div>
 
-    }
+      <!-- Section preview -->
+       <div class="pl-6">
+         @switch (section.type) {
+   
+           @case ('hero') {
+             @let heroProps = getHeroProps(section);
+             <app-hero-section
+               [title]="heroProps.title"
+               [subtitle]="heroProps.subtitle"
+               [buttonText]="heroProps.buttonText"
+               [whatsappNumber]="heroProps.whatsappNumber"
+               [imageUrl]="heroProps.imageUrl"
+             />
+           }
+   
+           @case ('features') {
+             @let featuresProps = getFeaturesProps(section);
+             <app-features-section
+               [sectionTitle]="featuresProps.sectionTitle"
+               [items]="featuresProps.items"
+             />
+           }
+   
+           @case ('cta') {
+             @let ctaProps = getCtaProps(section);
+             <app-cta-section
+               [title]="ctaProps.title"
+               [subtitle]="ctaProps.subtitle"
+               [buttonText]="ctaProps.buttonText"
+               [whatsappNumber]="ctaProps.whatsappNumber"
+             />
+           }
+   
+         }
 
-  </div>
+       </div>
 
-  <!-- Panel lateral -->
-  <app-section-editor />
+    </div>
+
+  }
 
 </div>
