@@ -9,13 +9,14 @@ import { LandingSection, BaseSection } from '../../models/landing-section.model'
 import { HeroProps } from '../../models/hero-section.model';
 import { FeaturesProps } from '../../models/features-section.model';
 import { CtaProps } from '../../models/cta-section.model';
+import { EditorPanel } from "../../components/editor-panel/editor-panel";
 
 @Component({
   selector: 'app-build',
-  imports: [HeroSection, 
-            FeaturesSection, 
-            CtaSection, 
-            DragDropModule],
+  imports: [HeroSection,
+    FeaturesSection,
+    CtaSection,
+    DragDropModule, EditorPanel],
   templateUrl: './build.html',
   styleUrl: './build.css',
 })

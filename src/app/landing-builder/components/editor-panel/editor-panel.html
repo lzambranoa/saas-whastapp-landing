@@ -1,0 +1,52 @@
+ <div class="w-80 h-full bg-white border-l p-4 overflow-y-auto">
+
+    @if (selectedSection()) {
+  
+      <h3 class="font-semibold mb-4 capitalize">
+        Editando sección: {{ selectedSection()!.type }}
+      </h3>
+  
+      @switch (selectedSection()!.type) {
+
+        @case ('hero') {
+          @let section = selectedSection()!;
+          @let heroProps = getHeroProps(section);
+          @if (heroProps) {
+            <app-hero-editor
+              [sectionId]="section.id"
+              [props]="heroProps">
+            </app-hero-editor>
+          }
+        }
+
+        @case ('features') {
+          @let section = selectedSection()!;
+          <app-features-editor
+            [sectionId]="section.id"
+            [items]="getFeaturesProps(section)?.items || []">
+          </app-features-editor>
+        }
+  
+        @case ('cta') {
+          @let section = selectedSection()!;
+          @let ctaProps = getCtaProps(section);
+          @if (ctaProps) {
+            <app-cta-editor
+              [sectionId]="section.id"
+              [props]="ctaProps">
+            </app-cta-editor>
+          }
+        }
+
+      }
+  
+    } @else {
+  
+      <p class="text-gray-400 text-sm">
+        Selecciona una sección para editar
+      </p>
+  
+    }
+  
+  </div>
+

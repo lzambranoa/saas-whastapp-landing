@@ -1,68 +1,81 @@
-<div
-  cdkDropList
-  (cdkDropListDropped)="onSectionDrop($event)"
-  class="space-y-6"
->
-
-  @for (section of builder.sections(); track section.id) {
-
+<div class="flex h-screen">
+  <div class="flex-1 overflow-y-auto bg-gray-50">
+    
     <div
-      cdkDrag
-      class="relative border rounded-xl bg-white shadow-sm"
-      (click)="builder.selectSection(section)"
-      [class.ring-2]="builder.selectedSection()?.id === section.id"
-      [class.ring-primary]="builder.selectedSection()?.id === section.id"
+      cdkDropList
+      (cdkDropListDropped)="onSectionDrop($event)"
+      class="space-y-8 px-6"
     >
-
-      <!-- Handle visual -->
-      <div
-        class="absolute top-4 left-0 -translate-x-1/2
-        bg-gray-100 border text-gray-600
-        px-2 py-1 rounded-md cursor-move
-        shadow-sm"
-      >
-        ☰
-      </div>
-
-      <!-- Section preview -->
-       <div class="pl-6">
-         @switch (section.type) {
-   
-           @case ('hero') {
-             @let heroProps = getHeroProps(section);
-             <app-hero-section
-               [title]="heroProps.title"
-               [subtitle]="heroProps.subtitle"
-               [buttonText]="heroProps.buttonText"
-               [whatsappNumber]="heroProps.whatsappNumber"
-               [imageUrl]="heroProps.imageUrl"
-             />
-           }
-   
-           @case ('features') {
-             @let featuresProps = getFeaturesProps(section);
-             <app-features-section
-               [sectionTitle]="featuresProps.sectionTitle"
-               [items]="featuresProps.items"
-             />
-           }
-   
-           @case ('cta') {
-             @let ctaProps = getCtaProps(section);
-             <app-cta-section
-               [title]="ctaProps.title"
-               [subtitle]="ctaProps.subtitle"
-               [buttonText]="ctaProps.buttonText"
-               [whatsappNumber]="ctaProps.whatsappNumber"
-             />
-           }
-   
-         }
-
-       </div>
-
+    
+      @for (section of builder.sections(); track section.id) {
+    
+        <!-- SECTION ROOT (DRAG + CLICK) -->
+        <div
+          cdkDrag
+          class="border rounded-xl bg-white shadow-sm overflow-hidden cursor-pointer"
+          (click)="builder.selectSection(section)"
+          [class.ring-2]="builder.selectedSection()?.id === section.id"
+          [class.ring-primary]="builder.selectedSection()?.id === section.id"
+        >
+    
+          <!-- HEADER / DRAG HANDLE -->
+          <div
+            cdkDragHandle
+            class="flex items-center gap-2 px-4 py-2 bg-gray-100
+                   cursor-move text-sm text-gray-600 select-none"
+            (click)="$event.stopPropagation()"
+          >
+            ☰
+            <span class="font-medium capitalize">
+              {{ section.type }}
+            </span>
+          </div>
+    
+          <!-- BODY -->
+          <div>
+    
+            @switch (section.type) {
+    
+              @case ('hero') {
+                @let heroProps = getHeroProps(section);
+                <app-hero-section
+                  [title]="heroProps.title"
+                  [subtitle]="heroProps.subtitle"
+                  [buttonText]="heroProps.buttonText"
+                  [whatsappNumber]="heroProps.whatsappNumber"
+                  [imageUrl]="heroProps.imageUrl"
+                />
+              }
+    
+              @case ('features') {
+                @let featuresProps = getFeaturesProps(section);
+                <app-features-section
+                  [sectionTitle]="featuresProps.sectionTitle"
+                  [items]="featuresProps.items"
+                />
+              }
+    
+              @case ('cta') {
+                @let ctaProps = getCtaProps(section);
+                <app-cta-section
+                  [title]="ctaProps.title"
+                  [subtitle]="ctaProps.subtitle"
+                  [buttonText]="ctaProps.buttonText"
+                  [whatsappNumber]="ctaProps.whatsappNumber"
+                />
+              }
+    
+            }
+    
+          </div>
+    
+        </div>
+        
+      }
+      
     </div>
-
-  }
-
+  </div>
+  
+  <app-editor-panel></app-editor-panel> 
 </div>
+<!-- Panel lateral -->

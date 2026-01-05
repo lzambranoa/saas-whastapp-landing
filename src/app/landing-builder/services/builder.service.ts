@@ -10,6 +10,7 @@ export class BuilderService {
   selectedSection = signal<LandingSection | null>(null);
 
   selectSection(section: LandingSection) {
+    console.log('selectSection', section);
     this.selectedSection.set(section);
   }
 
