@@ -8,31 +8,9 @@
     >
     
       @for (section of builder.sections(); track section.id) {
-    
-        <!-- SECTION ROOT (DRAG + CLICK) -->
-        <div
-          cdkDrag
-          class="border rounded-xl bg-white shadow-sm overflow-hidden cursor-pointer"
-          (click)="builder.selectSection(section)"
-          [class.ring-2]="builder.selectedSection()?.id === section.id"
-          [class.ring-primary]="builder.selectedSection()?.id === section.id"
-        >
-    
-          <!-- HEADER / DRAG HANDLE -->
-          <div
-            cdkDragHandle
-            class="flex items-center gap-2 px-4 py-2 bg-gray-100
-                   cursor-move text-sm text-gray-600 select-none"
-            (click)="$event.stopPropagation()"
-          >
-            ☰
-            <span class="font-medium capitalize">
-              {{ section.type }}
-            </span>
-          </div>
-    
-          <!-- BODY -->
-          <div>
+        
+        
+        <app-section-wrapper [section]="section"> 
     
             @switch (section.type) {
     
@@ -66,16 +44,9 @@
               }
     
             }
-    
-          </div>
-    
-        </div>
-        
-      }
-      
+          </app-section-wrapper>
+        }
     </div>
   </div>
-  
-  <app-editor-panel></app-editor-panel> 
+  <app-editor-panel></app-editor-panel>
 </div>
-<!-- Panel lateral -->

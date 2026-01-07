@@ -10,13 +10,14 @@ import { HeroProps } from '../../models/hero-section.model';
 import { FeaturesProps } from '../../models/features-section.model';
 import { CtaProps } from '../../models/cta-section.model';
 import { EditorPanel } from "../../components/editor-panel/editor-panel";
+import { SectionWrapper } from "../../components/section-wrapper/section-wrapper";
 
 @Component({
   selector: 'app-build',
   imports: [HeroSection,
     FeaturesSection,
     CtaSection,
-    DragDropModule, EditorPanel],
+    DragDropModule, EditorPanel, SectionWrapper],
   templateUrl: './build.html',
   styleUrl: './build.css',
 })
