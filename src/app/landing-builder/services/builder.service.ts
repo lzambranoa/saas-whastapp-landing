@@ -1,9 +1,23 @@
-import { Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 import { LandingSection } from '../models/landing-section.model';
 import { BUILDER_STATE } from '../state/builder.state';
 
 @Injectable({ providedIn: 'root' })
 export class BuilderService {
+
+  constructor() {
+    this.loadFromStorage();
+  
+    effect(() => {
+      this.sections();
+      this.selectedSection();
+      this.saveToStorage();
+    });
+  }
+  
+
+
+  STORAGE_KEY = 'landing-builder-state';
 
   sections = signal<LandingSection[]>(BUILDER_STATE.sections);
 
@@ -80,5 +94,47 @@ export class BuilderService {
       return newList;
     });
   }
+
+  // STORAGE 
+  
+  private saveToStorage() {
+    const state = {
+      sections: this.sections(),
+      selectedSectionId: this.selectedSection()?.id ?? null
+    };
+  
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(state));
+  }
+
+  private loadFromStorage() {
+    const raw = localStorage.getItem(this.STORAGE_KEY);
+    if (!raw) return;
+  
+    try {
+      const state = JSON.parse(raw);
+  
+      if (state.sections) {
+        this.sections.set(state.sections);
+      }
+  
+      if (state.selectedSectionId) {
+        const found = state.sections.find(
+          (s: any) => s.id === state.selectedSectionId
+        );
+        this.selectedSection.set(found ?? null);
+      }
+  
+    } catch (e) {
+      console.error('Error loading builder state', e);
+    }
+  }
+
+  reset() {
+    localStorage.removeItem(this.STORAGE_KEY);
+    this.sections.set([]);
+    this.clearSelection();
+  }
+  
+  
   
 }
