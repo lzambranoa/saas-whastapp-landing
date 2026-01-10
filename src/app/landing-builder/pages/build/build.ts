@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HeroSection } from '../../components/hero-section/hero-section';
 import { FeaturesSection } from '../../components/features-section/features-section';
 import { CtaSection } from '../../components/cta-section/cta-section';
@@ -11,6 +11,8 @@ import { FeaturesProps } from '../../models/features-section.model';
 import { CtaProps } from '../../models/cta-section.model';
 import { EditorPanel } from "../../components/editor-panel/editor-panel";
 import { SectionWrapper } from "../../components/section-wrapper/section-wrapper";
+import { ActivatedRoute } from '@angular/router';
+import { LandingsServices } from '../../services/landings.service';
 
 @Component({
   selector: 'app-build',
@@ -21,9 +23,21 @@ import { SectionWrapper } from "../../components/section-wrapper/section-wrapper
   templateUrl: './build.html',
   styleUrl: './build.css',
 })
-export class BuildPage {
+export class BuildPage implements OnInit{
+
+  
+  private route = inject(ActivatedRoute);
+  private landings = inject(LandingsServices);
 
   constructor(public builder: BuilderService) {}
+  
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.landings.select(id);
+    }
+  }
+
 
   getHeroProps(section: LandingSection): HeroProps {
     return (section as BaseSection<HeroProps>).props;

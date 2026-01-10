@@ -18,11 +18,11 @@ export class SectionEditor {
 
   constructor(public builder: BuilderService) {}
 
-  updateProp(key: string, value: any) {
+  updateProp(key: string | number | symbol, value: any) {
     const section = this.builder.selectedSection();
     if (!section) return;
 
-    this.builder.updateSectionProps(section.id, { [key]: value });
+    this.builder.updateSectionProps(section.id, { [String(key)]: value });
   }
 
   getFeaturesItems(section: LandingSection | null | undefined): any[] {

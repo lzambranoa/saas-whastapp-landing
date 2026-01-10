@@ -1,38 +1,75 @@
 import { effect, Injectable, signal } from '@angular/core';
 import { LandingSection } from '../models/landing-section.model';
-import { BUILDER_STATE } from '../state/builder.state';
+import { LandingsServices } from './landings.service';
 
 @Injectable({ providedIn: 'root' })
+
 export class BuilderService {
 
-  constructor() {
-    this.loadFromStorage();
   
+
+  sections = signal<any[]>([]);
+  selectedSection = signal<any | null>(null);
+
+  constructor(private landings: LandingsServices) {
+
+    // Cargar secciones cuando hay landing activa
     effect(() => {
-      this.sections();
-      this.selectedSection();
-      this.saveToStorage();
+      const landing = this.landings.activeLanding();
+      if (landing) {
+        this.sections.set(landing.sections ?? []);
+        this.selectedSection.set(null);
+      }
+    });
+
+    // Persistir automáticamente los cambios
+    effect(() => {
+      const landing = this.landings.activeLanding();
+      if (!landing) return;
+    
+      this.landings.updateSections(this.sections());
     });
   }
-  
 
+  /* -------------------------
+     Selection
+  ------------------------- */
 
-  STORAGE_KEY = 'landing-builder-state';
-
-  sections = signal<LandingSection[]>(BUILDER_STATE.sections);
-
-  selectedSection = signal<LandingSection | null>(null);
+  selectSection(section: any) {
+    this.selectedSection.set(section);
+  }
 
   clearSelection() {
     this.selectedSection.set(null);
   }
-  
 
-  selectSection(section: LandingSection) {
-    console.log('selectSection', section);
-    this.selectedSection.set(section);
+  /* -------------------------
+     Section operations
+  ------------------------- */
+
+  addSection(section: any) {
+    this.sections.update(list => [...list, section]);
   }
 
+  updateSection(updated: any) {
+    this.sections.update(list =>
+      list.map(s => s.id === updated.id ? updated : s)
+    );
+    this.selectedSection.set(updated);
+  }
+
+  removeSection(id: string) {
+    this.sections.update(list => list.filter(s => s.id !== id));
+    this.clearSelection();
+  }
+
+  reorderSections(sections: any[]) {
+    this.sections.set(sections);
+  }
+  
+
+
+  
   updateSectionProps(sectionId: string, newProps: any) {
     this.sections.update(sections =>
       sections.map(section =>
@@ -95,45 +132,7 @@ export class BuilderService {
     });
   }
 
-  // STORAGE 
-  
-  private saveToStorage() {
-    const state = {
-      sections: this.sections(),
-      selectedSectionId: this.selectedSection()?.id ?? null
-    };
-  
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(state));
-  }
-
-  private loadFromStorage() {
-    const raw = localStorage.getItem(this.STORAGE_KEY);
-    if (!raw) return;
-  
-    try {
-      const state = JSON.parse(raw);
-  
-      if (state.sections) {
-        this.sections.set(state.sections);
-      }
-  
-      if (state.selectedSectionId) {
-        const found = state.sections.find(
-          (s: any) => s.id === state.selectedSectionId
-        );
-        this.selectedSection.set(found ?? null);
-      }
-  
-    } catch (e) {
-      console.error('Error loading builder state', e);
-    }
-  }
-
-  reset() {
-    localStorage.removeItem(this.STORAGE_KEY);
-    this.sections.set([]);
-    this.clearSelection();
-  }
+ 
   
   
   

@@ -6,7 +6,7 @@ export const routes: Routes = [
         loadComponent: () => import('./dashboard/pages/home/home').then(m => m.Home),
     },
     {
-        path: 'builder',
+        path: 'builder/:id',
         loadComponent: () => import('./landing-builder/pages/build/build').then(m => m.BuildPage),
     },
     {

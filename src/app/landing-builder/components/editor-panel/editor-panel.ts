@@ -1,5 +1,4 @@
 import { Component, computed } from '@angular/core';
-import { JsonPipe } from '@angular/common';
 import { BuilderService } from '../../services/builder.service';
 import { HeroEditor } from "../section-editor/hero-editor/hero-editor";
 import { FeaturesEditor } from "../section-editor/features-editor/features-editor";
@@ -11,7 +10,7 @@ import { CtaProps } from '../../models/cta-section.model';
 
 @Component({
   selector: 'app-editor-panel',
-  imports: [HeroEditor, FeaturesEditor, CtaEditor, JsonPipe],
+  imports: [HeroEditor, FeaturesEditor, CtaEditor],
   templateUrl: './editor-panel.html',
   styleUrl: './editor-panel.css',
 })
