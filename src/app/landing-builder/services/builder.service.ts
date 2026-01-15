@@ -1,139 +1,151 @@
 import { effect, Injectable, signal } from '@angular/core';
-import { LandingSection } from '../models/landing-section.model';
-import { LandingsServices } from './landings.service';
+
+const STORAGE_KEY = 'landings';
 
 @Injectable({ providedIn: 'root' })
-
 export class BuilderService {
 
-  
-
   sections = signal<any[]>([]);
-  selectedSection = signal<any | null>(null);
+  selectedSectionId = signal<string | null>(null);
+  currentLandingId: string | null = null;
 
-  constructor(private landings: LandingsServices) {
+  /* =========================
+     STORAGE
+     ========================= */
 
-    // Cargar secciones cuando hay landing activa
-    effect(() => {
-      const landing = this.landings.activeLanding();
-      if (landing) {
-        this.sections.set(landing.sections ?? []);
-        this.selectedSection.set(null);
-      }
-    });
-
-    // Persistir automáticamente los cambios
-    effect(() => {
-      const landing = this.landings.activeLanding();
-      if (!landing) return;
-    
-      this.landings.updateSections(this.sections());
-    });
+  private getAllLandings(): any[] {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
   }
 
-  /* -------------------------
-     Selection
-  ------------------------- */
-
-  selectSection(section: any) {
-    this.selectedSection.set(section);
+  private saveAllLandings(landings: any[]) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(landings));
   }
 
-  clearSelection() {
-    this.selectedSection.set(null);
+  /* =========================
+     LOAD LANDING
+     ========================= */
+
+  loadLanding(id: string) {
+    const landings = this.getAllLandings();
+    const landing = landings.find(l => l.id === id);
+
+    if (!landing) return;
+
+    this.currentLandingId = id;
+    this.sections.set(landing.sections || []);
+    this.selectedSectionId.set(null);
   }
 
-  /* -------------------------
-     Section operations
-  ------------------------- */
+  private persistLanding() {
+    if (!this.currentLandingId) return;
 
-  addSection(section: any) {
+    const landings = this.getAllLandings();
+    const index = landings.findIndex(l => l.id === this.currentLandingId);
+
+    if (index === -1) return;
+
+    landings[index] = {
+      ...landings[index],
+      sections: this.sections()
+    };
+
+    this.saveAllLandings(landings);
+  }
+
+  /* =========================
+     SELECTION
+     ========================= */
+
+  selectSection(section: any | null) {
+    this.selectedSectionId.set(section ? section.id : null);
+  }
+
+  selectedSection() {
+    return this.sections().find(
+      s => s.id === this.selectedSectionId()
+    ) ?? null;
+  }
+
+  /* =========================
+     CRUD SECTIONS
+     ========================= */
+
+  addSection(type: string, data: any = {}) {
+    const section = {
+      id: crypto.randomUUID(),
+      type,
+      data
+    };
+
     this.sections.update(list => [...list, section]);
+    this.persistLanding();
   }
 
-  updateSection(updated: any) {
+  updateSection(section: any) {
     this.sections.update(list =>
-      list.map(s => s.id === updated.id ? updated : s)
-    );
-    this.selectedSection.set(updated);
-  }
-
-  removeSection(id: string) {
-    this.sections.update(list => list.filter(s => s.id !== id));
-    this.clearSelection();
-  }
-
-  reorderSections(sections: any[]) {
-    this.sections.set(sections);
-  }
-  
-
-
-  
-  updateSectionProps(sectionId: string, newProps: any) {
-    this.sections.update(sections =>
-      sections.map(section =>
-        section.id === sectionId
-          ? { ...section, props: { ...section.props, ...newProps } }
-          : section
-      )
+      list.map(s => s.id === section.id ? section : s)
     );
 
-    if (this.selectedSection()?.id === sectionId) {
-      this.selectedSection.update(s => s ? { ...s, props: { ...s.props, ...newProps } } : s);
-    }
+    this.persistLanding();
   }
 
-  updateSections(sections: LandingSection[]) {
-    this.sections.set(sections);
+  deleteSection(section: any) {
+    this.sections.update(list =>
+      list.filter(s => s.id !== section.id)
+    );
+
+    this.selectSection(null);
+    this.persistLanding();
   }
 
   duplicateSection(section: any) {
     const index = this.sections().findIndex(s => s.id === section.id);
     if (index === -1) return;
-  
+
     const copy = {
       ...structuredClone(section),
       id: crypto.randomUUID()
     };
-  
+
     this.sections.update(list => {
-      const newList = [...list];
-      newList.splice(index + 1, 0, copy);
-      return newList;
+      const next = [...list];
+      next.splice(index + 1, 0, copy);
+      return next;
     });
-  
+
     this.selectSection(copy);
+    this.persistLanding();
   }
-  
-  deleteSection(section: any) {
-    this.sections.update(list => list.filter(s => s.id !== section.id));
-    this.clearSelection();
-  }
-  
+
   moveUp(section: any) {
     this.swap(section, -1);
   }
-  
+
   moveDown(section: any) {
     this.swap(section, 1);
   }
-  
-  private swap(section: any, direction: number) {
-    this.sections.update(list => {
-      const index = list.findIndex(s => s.id === section.id);
-      const target = index + direction;
-  
-      if (target < 0 || target >= list.length) return list;
-  
-      const newList = [...list];
-      [newList[index], newList[target]] = [newList[target], newList[index]];
-      return newList;
-    });
+
+  getSelectedSection() {
+    return this.sections().find(
+      s => s.id === this.selectedSectionId()
+    );
   }
 
- 
-  
-  
-  
+  private swap(section: any, dir: number) {
+    this.sections.update(list => {
+      const index = list.findIndex(s => s.id === section.id);
+      const target = index + dir;
+
+      if (target < 0 || target >= list.length) return list;
+
+      const next = [...list];
+      [next[index], next[target]] = [next[target], next[index]];
+      return next;
+    });
+
+    this.persistLanding();
+  }
 }
+
+
+

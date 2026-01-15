@@ -10,33 +10,39 @@ import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-
 })
 export class FeaturesEditor {
 
-  @Input() sectionId!: string;
-  @Input() items: any[] = [];
+  @Input() section!: any;
 
   constructor(private builder: BuilderService) {}
 
   drop(event: CdkDragDrop<any[]>) {
-    const updated = [...this.items];
-    moveItemInArray(updated, event.previousIndex, event.currentIndex);
-    this.builder.updateSectionProps(this.sectionId, { items: updated });
+    const updatedItems = [...this.section.data.items];
+    moveItemInArray(updatedItems, event.previousIndex, event.currentIndex);
+
+    this.builder.updateSection({
+      ...this.section,
+      data: {
+        ...this.section.data,
+        items: updatedItems
+      }
+    });
   }
 
   updateItem(index: number, key: string, value: string) {
-    const updated = [...this.items];
-    updated[index] = { ...updated[index], [key]: value };
-    this.builder.updateSectionProps(this.sectionId, { items: updated });
-  }
+    const updatedItems = [...this.section.data.items];
+    updatedItems[index] = {
+      ...updatedItems[index],
+      [key]: value
+    };
 
-  /*
-  addItem() {
-    const updated = [...this.items, { icon: '⭐', title: '', description: '' }];
-    this.builder.updateSectionProps(this.sectionId, { items: updated });
+    this.builder.updateSection({
+      ...this.section,
+      data: {
+        ...this.section.data,
+        items: updatedItems
+      }
+    });
   }
-
-  removeItem(index: number) {
-    const updated = this.items.filter((_, i) => i !== index);
-    this.builder.updateSectionProps(this.sectionId, { items: updated });
-  }
-*/
-
 }
+
+
+

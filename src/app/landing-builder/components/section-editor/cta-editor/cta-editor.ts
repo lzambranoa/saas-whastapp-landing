@@ -10,17 +10,19 @@ import { CtaProps } from '../../../models/cta-section.model';
 })
 export class CtaEditor {
 
-  @Input() sectionId!: string;
-  @Input() props!: CtaProps;
+  @Input() section!: any;
 
   constructor(private builder: BuilderService) {}
 
   update(key: keyof CtaProps, value: string) {
-    this.builder.updateSectionProps(this.sectionId, {
-      [key]: value
+    this.builder.updateSection({
+      ...this.section,
+      data: {
+        ...this.section.data,
+        [key]: value
+      }
     });
   }
-
 }
 
 

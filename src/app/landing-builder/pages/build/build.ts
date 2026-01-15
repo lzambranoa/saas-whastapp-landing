@@ -34,7 +34,8 @@ export class BuildPage implements OnInit{
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.landings.select(id);
+      // this.landings.select(id);
+      this.builder.loadLanding(id);
     }
   }
 

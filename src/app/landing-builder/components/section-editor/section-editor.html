@@ -1,60 +1,42 @@
 <aside class="w-80 border-l p-4 bg-gray-50 h-screen sticky top-0">
 
-    @if (builder.selectedSection()) {
-  
-      <h3 class="font-bold text-lg mb-4">
-        Editar sección: {{ builder.selectedSection()?.type }}
-      </h3>
-  
-      @for (prop of (builder.selectedSection()?.props | keyvalue); track prop.key) {
-  
-          <!-- Props simples -->
-      @if (typeof prop.value === 'string') {
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">
-            {{ prop.key }}
-          </label>
-  
-          <input
-            class="w-full border rounded px-3 py-2"
-            [value]="prop.value"
-            (input)="updateProp(prop.key, $any($event.target).value)"
-          />
-        </div>
+  @if (builder.getSelectedSection()) {
+
+    @let section = builder.getSelectedSection()!;
+
+    <h3 class="font-bold text-lg mb-4">
+      Editar sección: {{ section.type }}
+    </h3>
+
+    <!-- EDITORES ESPECÍFICOS -->
+    @switch (section.type) {
+
+      @case ('hero') {
+        <app-hero-editor [section]="section" />
       }
 
-      <!-- Arrays u objetos -->
-      @if (typeof prop.value === 'object') {
-        <div class="mb-4 text-sm text-gray-500 italic">
-          {{ prop.key }} (editor avanzado pendiente)
-        </div>
+      @case ('features') {
+        <app-features-editor [section]="section" />
       }
-  
+
+      @case ('cta') {
+        <app-cta-editor [section]="section" />
       }
-  
-    } @else {
-  
-      <p class="text-gray-500">
-        Selecciona una sección para editar
-      </p>
-  
-    }
-  
-    @if (builder.selectedSection()?.type === 'features') {
-      @let section = builder.selectedSection()!;
-      <app-features-editor
-        [sectionId]="section.id"
-        [items]="getFeaturesItems(section)"
-      />
+
+      @default {
+        <p class="text-sm text-gray-500 italic">
+          No hay editor para este tipo de sección
+        </p>
+      }
+
     }
 
-    @if (builder.selectedSection()?.type === 'hero') {
-      @let section = builder.selectedSection()!;
-      @let heroProps = getHeroProps(section);
-      @if (heroProps) {
-        <app-hero-editor
-          [sectionId]="section.id"
-          [props]="heroProps"
-        />
-      }
-    }
+  } @else {
+
+    <p class="text-gray-500">
+      Selecciona una sección para editar
+    </p>
+
+  }
+
+</aside>

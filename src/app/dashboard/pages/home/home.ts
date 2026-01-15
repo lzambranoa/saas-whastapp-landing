@@ -21,6 +21,7 @@
     }
 
     openLanding(id: string) {
+      console.log(id)
       this.landings.select(id);
       this.router.navigate(['/dashboard/builder', id]);
     }

@@ -6,7 +6,7 @@
     (cdkDropListDropped)="drop($any($event))"
     class="space-y-3"
   >
-    @for (item of items; track item; let i = $index) {
+    @for (item of section.data.items; track item; let i = $index) {
       <div
         cdkDrag
         class="border rounded p-3 bg-white cursor-move"

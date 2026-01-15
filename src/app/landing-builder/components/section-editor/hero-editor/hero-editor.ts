@@ -1,25 +1,23 @@
 import { Component, Input } from '@angular/core';
 import { BuilderService } from '../../../services/builder.service';
-import { HeroProps } from '../../../models/hero-section.model';
 
 @Component({
   selector: 'app-hero-editor',
-  imports: [],
-  templateUrl: './hero-editor.html',
-  styleUrl: './hero-editor.css',
+  templateUrl: './hero-editor.html'
 })
 export class HeroEditor {
 
-  
-  @Input() sectionId!: string;
-  @Input() props!: HeroProps;
+  @Input() section!: any;
 
   constructor(private builder: BuilderService) {}
 
-  update(key: keyof HeroProps, value: string) {
-    this.builder.updateSectionProps(this.sectionId, {
-      [key]: value
+  update(key: string, value: any) {
+    this.builder.updateSection({
+      ...this.section,
+      data: {
+        ...this.section.data,
+        [key]: value
+      }
     });
   }
-
 }

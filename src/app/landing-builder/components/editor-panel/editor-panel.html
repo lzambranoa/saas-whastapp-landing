@@ -1,52 +1,29 @@
- <div class="w-80 h-full bg-white border-l p-4 overflow-y-auto">
+<div *ngIf="selectedSection() as section" class="p-4 border-l bg-white h-full">
 
-    @if (selectedSection()) {
-  
-      <h3 class="font-semibold mb-4 capitalize">
-        Editando sección: {{ selectedSection()!.type }}
-      </h3>
-  
-      @switch (selectedSection()!.type) {
+  <h3 class="font-semibold mb-4">
+    Editando sección: {{ section.type }}
+  </h3>
 
-        @case ('hero') {
-          @let section = selectedSection()!;
-          @let heroProps = getHeroProps(section);
-          @if (heroProps) {
-            <app-hero-editor
-              [sectionId]="section.id"
-              [props]="heroProps">
-            </app-hero-editor>
-          }
-        }
+  @switch (section.type) {
 
-        @case ('features') {
-          @let section = selectedSection()!;
-          <app-features-editor
-            [sectionId]="section.id"
-            [items]="getFeaturesProps(section)?.items || []">
-          </app-features-editor>
-        }
-  
-        @case ('cta') {
-          @let section = selectedSection()!;
-          @let ctaProps = getCtaProps(section);
-          @if (ctaProps) {
-            <app-cta-editor
-              [sectionId]="section.id"
-              [props]="ctaProps">
-            </app-cta-editor>
-          }
-        }
-
-      }
-  
-    } @else {
-  
-      <p class="text-gray-400 text-sm">
-        Selecciona una sección para editar
-      </p>
-  
+    @case ('hero') {
+      <app-hero-editor
+        [section]="section">
+      </app-hero-editor>
     }
-  
-  </div>
 
+    @case ('features') {
+      <app-features-editor
+        [section]="section">
+      </app-features-editor>
+    }
+
+    @case ('cta') {
+      <app-cta-editor
+        [section]="section">
+      </app-cta-editor>
+    }
+
+  }
+
+</div>

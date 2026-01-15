@@ -4,7 +4,7 @@
     <label class="block text-sm mb-1">Título</label>
     <input
       class="w-full border rounded px-3 py-2 mb-3"
-      [value]="props.title"
+      [value]="section.data.title"
       (input)="update('title', $any($event.target).value)"
     />
   
@@ -12,32 +12,32 @@
     <textarea
       class="w-full border rounded px-3 py-2 mb-3"
       (input)="update('subtitle', $any($event.target).value)"
-    >{{ props.subtitle }}</textarea>
+    >{{ section.data.subtitle }}</textarea>
   
     <label class="block text-sm mb-1">Texto del botón</label>
     <input
       class="w-full border rounded px-3 py-2 mb-3"
-      [value]="props.buttonText"
+      [value]="section.data.buttonText"
       (input)="update('buttonText', $any($event.target).value)"
     />
   
     <label class="block text-sm mb-1">Número de WhatsApp</label>
     <input
       class="w-full border rounded px-3 py-2 mb-3"
-      [value]="props.whatsappNumber"
+      [value]="section.data.whatsappNumber"
       (input)="update('whatsappNumber', $any($event.target).value)"
     />
   
     <label class="block text-sm mb-1">URL Imagen</label>
     <input
       class="w-full border rounded px-3 py-2"
-      [value]="props.imageUrl"
+      [value]="section.data.imageUrl"
       (input)="update('imageUrl', $any($event.target).value)"
     />
   
-    @if (props.imageUrl) {
+    @if (section.data.imageUrl) {
       <img
-        [src]="props.imageUrl"
+        [src]="section.data.imageUrl"
         class="mt-4 rounded shadow"
         alt="Preview imagen hero"
       />
