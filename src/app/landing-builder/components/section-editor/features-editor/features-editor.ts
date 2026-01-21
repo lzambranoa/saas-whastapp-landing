@@ -18,13 +18,16 @@ export class FeaturesEditor {
     const updatedItems = [...this.section.data.items];
     moveItemInArray(updatedItems, event.previousIndex, event.currentIndex);
 
-    this.builder.updateSection({
-      ...this.section,
-      data: {
-        ...this.section.data,
-        items: updatedItems
+    this.builder.updateSection(
+      this.section.id,
+      {
+        data: {
+          ...this.section.data,
+          items: updatedItems
+        }
       }
-    });
+    );
+    
   }
 
   updateItem(index: number, key: string, value: string) {
@@ -34,13 +37,13 @@ export class FeaturesEditor {
       [key]: value
     };
 
-    this.builder.updateSection({
-      ...this.section,
-      data: {
-        ...this.section.data,
+    this.builder.updateSection(
+      this.section.id,
+      {
         items: updatedItems
       }
-    });
+    );
+    
   }
 }
 

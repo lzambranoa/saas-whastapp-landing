@@ -1,46 +1,46 @@
 <div>
-    <h4 class="font-semibold mb-4">Hero Section</h4>
-  
-    <label class="block text-sm mb-1">Título</label>
-    <input
-      class="w-full border rounded px-3 py-2 mb-3"
-      [value]="section.data.title"
-      (input)="update('title', $any($event.target).value)"
+  <h4 class="font-semibold mb-4">Hero Section</h4>
+
+  <label class="block text-sm mb-1">Título</label>
+  <input
+    class="w-full border rounded px-3 py-2 mb-3"
+    [value]="section.data.title"
+    (input)="update('title', $any($event.target).value)"
+  />
+
+  <label class="block text-sm mb-1">Subtítulo</label>
+  <textarea
+    class="w-full border rounded px-3 py-2 mb-3"
+    [value]="section.data.subtitle"
+    (input)="update('subtitle', $any($event.target).value)"
+  ></textarea>
+
+  <label class="block text-sm mb-1">Texto del botón</label>
+  <input
+    class="w-full border rounded px-3 py-2 mb-3"
+    [value]="section.data.buttonText"
+    (input)="update('buttonText', $any($event.target).value)"
+  />
+
+  <label class="block text-sm mb-1">Número de WhatsApp</label>
+  <input
+    class="w-full border rounded px-3 py-2 mb-3"
+    [value]="section.data.whatsappNumber"
+    (input)="update('whatsappNumber', $any($event.target).value)"
+  />
+
+  <label class="block text-sm mb-1">URL Imagen</label>
+  <input
+    class="w-full border rounded px-3 py-2"
+    [value]="section.data.imageUrl"
+    (input)="update('imageUrl', $any($event.target).value)"
+  />
+
+  @if (section.data.imageUrl) {
+    <img
+      [src]="section.data.imageUrl"
+      class="mt-4 rounded shadow max-h-48 object-cover"
+      alt="Preview imagen hero"
     />
-  
-    <label class="block text-sm mb-1">Subtítulo</label>
-    <textarea
-      class="w-full border rounded px-3 py-2 mb-3"
-      (input)="update('subtitle', $any($event.target).value)"
-    >{{ section.data.subtitle }}</textarea>
-  
-    <label class="block text-sm mb-1">Texto del botón</label>
-    <input
-      class="w-full border rounded px-3 py-2 mb-3"
-      [value]="section.data.buttonText"
-      (input)="update('buttonText', $any($event.target).value)"
-    />
-  
-    <label class="block text-sm mb-1">Número de WhatsApp</label>
-    <input
-      class="w-full border rounded px-3 py-2 mb-3"
-      [value]="section.data.whatsappNumber"
-      (input)="update('whatsappNumber', $any($event.target).value)"
-    />
-  
-    <label class="block text-sm mb-1">URL Imagen</label>
-    <input
-      class="w-full border rounded px-3 py-2"
-      [value]="section.data.imageUrl"
-      (input)="update('imageUrl', $any($event.target).value)"
-    />
-  
-    @if (section.data.imageUrl) {
-      <img
-        [src]="section.data.imageUrl"
-        class="mt-4 rounded shadow"
-        alt="Preview imagen hero"
-      />
-    }
-  </div>
-  
+  }
+</div>

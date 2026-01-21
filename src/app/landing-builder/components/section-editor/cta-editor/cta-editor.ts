@@ -15,14 +15,11 @@ export class CtaEditor {
   constructor(private builder: BuilderService) {}
 
   update(key: keyof CtaProps, value: string) {
-    this.builder.updateSection({
-      ...this.section,
-      data: {
-        ...this.section.data,
-        [key]: value
-      }
+    this.builder.updateSection(this.section.id, {
+      buttonText: value
     });
   }
+  
 }
 
 

@@ -1,14 +1,13 @@
 <aside class="w-80 border-l p-4 bg-gray-50 h-screen sticky top-0">
 
-  @if (builder.getSelectedSection()) {
+  @let section = builder.selectedSection();
 
-    @let section = builder.getSelectedSection()!;
+  @if (section) {
 
     <h3 class="font-bold text-lg mb-4">
       Editar sección: {{ section.type }}
     </h3>
 
-    <!-- EDITORES ESPECÍFICOS -->
     @switch (section.type) {
 
       @case ('hero') {

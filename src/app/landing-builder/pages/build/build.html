@@ -1,52 +1,77 @@
 <div class="flex h-screen">
+
+  <!-- Canvas -->
   <div class="flex-1 overflow-y-auto bg-gray-50">
+       <!-- ADD SECTION BAR -->
+       <div class="flex gap-2 mb-6">
+        <button
+          class="px-4 py-2 bg-primary text-white rounded"
+          (click)="addHero()"
+        >
+          + Hero
+        </button>
+  
+        <button
+          class="px-4 py-2 bg-primary text-white rounded"
+          (click)="addFeatures()"
+        >
+          + Features
+        </button>
+  
+        <button
+          class="px-4 py-2 bg-primary text-white rounded"
+          (click)="addCta()"
+        >
+          + CTA
+        </button>
+      </div>
     
     <div
       cdkDropList
       (cdkDropListDropped)="onSectionDrop($event)"
-      class="space-y-8 px-6"
+      class="space-y-8 px-6 py-8"
     >
-    
       @for (section of builder.sections(); track section.id) {
-        
-        
-        <app-section-wrapper [section]="section"> 
-    
-            @switch (section.type) {
-    
-              @case ('hero') {
-                @let heroProps = getHeroProps(section);
-                <app-hero-section
-                  [title]="heroProps.title"
-                  [subtitle]="heroProps.subtitle"
-                  [buttonText]="heroProps.buttonText"
-                  [whatsappNumber]="heroProps.whatsappNumber"
-                  [imageUrl]="heroProps.imageUrl"
-                />
-              }
-    
-              @case ('features') {
-                @let featuresProps = getFeaturesProps(section);
-                <app-features-section
-                  [sectionTitle]="featuresProps.sectionTitle"
-                  [items]="featuresProps.items"
-                />
-              }
-    
-              @case ('cta') {
-                @let ctaProps = getCtaProps(section);
-                <app-cta-section
-                  [title]="ctaProps.title"
-                  [subtitle]="ctaProps.subtitle"
-                  [buttonText]="ctaProps.buttonText"
-                  [whatsappNumber]="ctaProps.whatsappNumber"
-                />
-              }
-    
+
+        <app-section-wrapper [section]="section">
+
+          @switch (section.type) {
+
+            @case ('hero') {
+              <app-hero-section
+                [title]="section.data.title"
+                [subtitle]="section.data.subtitle"
+                [buttonText]="section.data.buttonText"
+                [whatsappNumber]="section.data.whatsappNumber"
+                [imageUrl]="section.data.imageUrl"
+              />
             }
-          </app-section-wrapper>
-        }
+
+            @case ('features') {
+              <app-features-section
+                [sectionTitle]="section.data.sectionTitle"
+                [items]="section.data.items"
+              />
+            }
+
+            @case ('cta') {
+              <app-cta-section
+                [title]="section.data.title"
+                [subtitle]="section.data.subtitle"
+                [buttonText]="section.data.buttonText"
+                [whatsappNumber]="section.data.whatsappNumber"
+              />
+            }
+
+          }
+
+        </app-section-wrapper>
+
+      }
     </div>
   </div>
+
+  <!-- Editor -->
   <app-editor-panel></app-editor-panel>
+
 </div>

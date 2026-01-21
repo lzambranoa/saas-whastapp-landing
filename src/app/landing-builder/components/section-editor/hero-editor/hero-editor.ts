@@ -7,17 +7,14 @@ import { BuilderService } from '../../../services/builder.service';
 })
 export class HeroEditor {
 
-  @Input() section!: any;
+  @Input({ required: true }) section!: any;
 
   constructor(private builder: BuilderService) {}
 
   update(key: string, value: any) {
-    this.builder.updateSection({
-      ...this.section,
-      data: {
-        ...this.section.data,
-        [key]: value
-      }
+    this.builder.updateSection(this.section.id, {
+      title: value
     });
+    
   }
 }

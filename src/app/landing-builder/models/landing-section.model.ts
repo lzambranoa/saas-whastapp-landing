@@ -11,10 +11,10 @@ export type SectionType =
   | 'testimonials'
   | 'cta';
 
-export interface BaseSection<T> {
+export interface BaseSection<T = any> {
   id: string;
   type: SectionType;
-  props: T;
+  data: T;
 }
 
 export type LandingSection =
