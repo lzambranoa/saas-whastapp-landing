@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { BuilderService } from '../../../services/builder.service';
+import { HeroProps } from '../../../models/hero-section.model';
 
 @Component({
   selector: 'app-hero-editor',
@@ -11,10 +12,10 @@ export class HeroEditor {
 
   constructor(private builder: BuilderService) {}
 
-  update(key: string, value: any) {
-    this.builder.updateSection(this.section.id, {
-      title: value
-    });
-    
-  }
+  update(key: keyof HeroProps, value: any) {
+  this.builder.updateSection(
+    this.section.id,
+    { [key]: value }
+  );
+}
 }

@@ -1,51 +1,58 @@
 import { Component, Input } from '@angular/core';
 import { BuilderService } from '../../../services/builder.service';
-import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-drop';
+import { FeaturesProps } from '../../../models/section.model';
 
 @Component({
   selector: 'app-features-editor',
-  imports: [DragDropModule],
   templateUrl: './features-editor.html',
-  styleUrl: './features-editor.css',
 })
 export class FeaturesEditor {
 
-  @Input() section!: any;
+  @Input({ required: true }) section!: {
+    id: string;
+    data: FeaturesProps;
+  };
 
   constructor(private builder: BuilderService) {}
 
-  drop(event: CdkDragDrop<any[]>) {
-    const updatedItems = [...this.section.data.items];
-    moveItemInArray(updatedItems, event.previousIndex, event.currentIndex);
-
-    this.builder.updateSection(
-      this.section.id,
-      {
-        data: {
-          ...this.section.data,
-          items: updatedItems
-        }
-      }
-    );
-    
+  updateSectionTitle(value: string) {
+    this.builder.updateSection(this.section.id, {
+      sectionTitle: value,
+    });
   }
 
-  updateItem(index: number, key: string, value: string) {
-    const updatedItems = [...this.section.data.items];
-    updatedItems[index] = {
-      ...updatedItems[index],
-      [key]: value
-    };
+  updateItemTitle(index: number, value: string) {
+    const items = [...this.section.data.items];
+    items[index] = { ...items[index], title: value };
 
-    this.builder.updateSection(
-      this.section.id,
-      {
-        items: updatedItems
-      }
-    );
-    
+    this.builder.updateSection(this.section.id, { items });
+  }
+
+  updateItemDescription(index: number, value: string) {
+    const items = [...this.section.data.items];
+    items[index] = { ...items[index], description: value };
+
+    this.builder.updateSection(this.section.id, { items });
+  }
+
+  updateItemIcon(index: number, value: string) {
+    const items = [...this.section.data.items];
+    items[index] = { ...items[index], icon: value };
+
+    this.builder.updateSection(this.section.id, { items });
+  }
+
+  addItem() {
+    const items = [
+      ...this.section.data.items,
+      { title: '', icon: '', description: '' },
+    ];
+
+    this.builder.updateSection(this.section.id, { items });
+  }
+
+  removeItem(index: number) {
+    const items = this.section.data.items.filter((_, i) => i !== index);
+    this.builder.updateSection(this.section.id, { items });
   }
 }
-
-
-

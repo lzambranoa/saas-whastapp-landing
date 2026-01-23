@@ -10,7 +10,7 @@ export const BUILDER_STATE: LandingPage = {
     {
       id: 'hero-1',
       type: 'hero',
-      props: {
+      data: {
         title: 'Convierte visitas en clientes por WhatsApp',
         subtitle: 'Landing pages optimizadas para vender sin fricción',
         buttonText: 'Escríbenos por WhatsApp',
@@ -21,7 +21,7 @@ export const BUILDER_STATE: LandingPage = {
     {
       id: 'features-1',
       type: 'features',
-      props: {
+      data: {
         sectionTitle: '¿Por qué usar nuestra plataforma?',
         items: [
           {
@@ -45,7 +45,7 @@ export const BUILDER_STATE: LandingPage = {
     {
       id: 'cta-1',
       type: 'cta',
-      props: {
+      data: {
         title: 'Empieza hoy mismo',
         subtitle: 'Crea tu landing en menos de 10 minutos',
         buttonText: 'Crear mi landing',

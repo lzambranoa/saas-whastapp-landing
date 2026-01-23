@@ -1,42 +1,48 @@
-<div>
-  <h4 class="font-semibold mb-3">Features</h4>
+<div class="space-y-4">
 
-  <div
-    cdkDropList
-    (cdkDropListDropped)="drop($any($event))"
-    class="space-y-3"
-  >
-    @for (item of section.data.items; track item; let i = $index) {
-      <div
-        cdkDrag
-        class="border rounded p-3 bg-white cursor-move"
-      >
+  <label class="block">
+    <span class="text-sm font-medium">Título de la sección</span>
+    <input
+      type="text"
+      class="input"
+      [value]="section.data.sectionTitle"
+      (input)="updateSectionTitle($any($event.target).value)"
+    />
+  </label>
 
-        <div class="text-xs text-gray-400 mb-1">
-          Arrastrar para ordenar
-        </div>
+  <div class="space-y-4">
+    @for (item of section.data.items; let i = $index; track i) {
+      <div class="border p-3 rounded space-y-2">
 
         <input
-          class="w-full mb-2 border px-2 py-1 rounded"
-          placeholder="Icono"
+          type="text"
+          class="input"
+          placeholder="Ícono"
           [value]="item.icon"
-          (input)="updateItem(i, 'icon', $any($event.target).value)"
+          (input)="updateItemIcon(i, $any($event.target).value)"
         />
 
         <input
-          class="w-full mb-2 border px-2 py-1 rounded"
+          type="text"
+          class="input"
           placeholder="Título"
           [value]="item.title"
-          (input)="updateItem(i, 'title', $any($event.target).value)"
+          (input)="updateItemTitle(i, $any($event.target).value)"
         />
 
         <textarea
-          class="w-full border px-2 py-1 rounded"
-          (input)="updateItem(i, 'description', $any($event.target).value)"
+          class="input"
+          placeholder="Descripción"
+          (input)="updateItemDescription(i, $any($event.target).value)"
         >{{ item.description }}</textarea>
 
+        <button class="text-red-500 text-sm" (click)="removeItem(i)">
+          Eliminar
+        </button>
       </div>
     }
-
   </div>
+
+  <button class="btn-primary" (click)="addItem()">+ Agregar feature</button>
+
 </div>

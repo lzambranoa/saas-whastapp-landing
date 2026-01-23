@@ -1,84 +1,129 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { LandingsServices } from './landings.service';
-import { LandingSection, SectionType } from '../models/landing-section.model';
+import { Section, SectionType } from '../models/section.model';
 
 @Injectable({ providedIn: 'root' })
 export class BuilderService {
 
-  /* =========================
-     STATE (solo edición)
-     ========================= */
+  private landings = inject(LandingsServices);
 
-  sections = signal<LandingSection[]>([]);
+  sections = signal<Section[]>([]);
   selectedSectionId = signal<string | null>(null);
 
-  constructor(private landings: LandingsServices) {}
-
+ 
   /* =========================
-     LOAD DESDE LANDING ACTIVA
+     LOAD / SYNC
      ========================= */
 
   loadFromActiveLanding() {
     const landing = this.landings.activeLanding();
     if (!landing) return;
 
-    // Clon profundo para evitar mutaciones fantasmas
-    this.sections.set(structuredClone(landing.sections));
+    this.sections.set(landing.sections ?? []);
     this.selectedSectionId.set(null);
   }
-
   /* =========================
-     SELECTION
+     ADD
      ========================= */
 
-  selectSection(section: LandingSection | null) {
-    this.selectedSectionId.set(section ? section.id : null);
-  }
-
-  selectedSection(): LandingSection | null {
-    return (
-      this.sections().find(s => s.id === this.selectedSectionId()) ?? null
-    );
-  }
-
-  /* =========================
-     CRUD SECTIONS
-     ========================= */
-
-  addSection(type: SectionType, data: any = {}) {
-    const section: LandingSection = {
+  addSection(type: SectionType) {
+    const section: Section = {
       id: crypto.randomUUID(),
       type,
-      data
+      data: this.defaultData(type),
     };
 
     this.sections.update(list => [...list, section]);
     this.sync();
   }
 
-  updateSection<T>(id: string, data: Partial<T>) {
+  /* =========================
+     UPDATE (FIX DEFINITIVO)
+     ========================= */
+
+  updateSection(id: string, patch: any) {
     this.sections.update(list =>
       list.map(section =>
         section.id === id
-          ? {
-              ...section,
-              data: {
-                ...(section as any).data,
-                ...data
-              }
-            }
+          ? { ...section, data: { ...section.data, ...patch } }
           : section
       )
     );
-  
+
     this.sync();
   }
-  
-  
-  
-  
 
-  deleteSection(section: LandingSection) {
+  /* =========================
+     SELECT
+     ========================= */
+
+  selectSection(section: Section | null) {
+    this.selectedSectionId.set(section ? section.id : null);
+  }
+
+  selectedSection(): Section | null {
+    return this.sections().find(s => s.id === this.selectedSectionId()) ?? null;
+  }
+
+  /* =========================
+     MOVE
+     ========================= */
+
+  moveUp(section: Section) {
+    this.sections.update(list => {
+      const index = list.findIndex(s => s.id === section.id);
+      if (index <= 0) return list;
+
+      const newList = [...list];
+      [newList[index - 1], newList[index]] = [newList[index], newList[index - 1]];
+      this.sync();
+      return newList;
+    });
+  }
+
+  moveDown(section: Section) {
+    this.sections.update(list => {
+      const index = list.findIndex(s => s.id === section.id);
+      if (index >= list.length - 1) return list;
+
+      const newList = [...list];
+      [newList[index], newList[index + 1]] = [newList[index + 1], newList[index]];
+      this.sync();
+      return newList;
+    });
+  }
+
+  /* =========================
+     DUPLICATE
+     ========================= */
+
+  duplicateSection(section: Section) {
+  const newSection: Section = {
+    ...structuredClone(section),
+    id: crypto.randomUUID(),
+  };
+
+  this.sections.update(list => {
+    const index = list.findIndex(s => s.id === section.id);
+    return [
+      ...list.slice(0, index + 1),
+      newSection,
+      ...list.slice(index + 1),
+    ];
+  });
+
+  // ✅ seleccionar correctamente
+  this.selectedSectionId.set(newSection.id);
+
+  this.sync();
+}
+
+
+  /* =========================
+     DELETE
+     ========================= */
+
+   deleteSection(section: Section) {
     this.sections.update(list =>
       list.filter(s => s.id !== section.id)
     );
@@ -87,53 +132,45 @@ export class BuilderService {
     this.sync();
   }
 
-  duplicateSection(section: LandingSection) {
-    const index = this.sections().findIndex(s => s.id === section.id);
-    if (index === -1) return;
-
-    const copy: LandingSection = {
-      ...structuredClone(section),
-      id: crypto.randomUUID()
-    };
-
-    this.sections.update(list => {
-      const next = [...list];
-      next.splice(index + 1, 0, copy);
-      return next;
-    });
-
-    this.selectSection(copy);
-    this.sync();
-  }
-
-  moveUp(section: LandingSection) {
-    this.swap(section, -1);
-  }
-
-  moveDown(section: LandingSection) {
-    this.swap(section, 1);
-  }
-
-  private swap(section: LandingSection, dir: number) {
-    this.sections.update(list => {
-      const index = list.findIndex(s => s.id === section.id);
-      const target = index + dir;
-
-      if (target < 0 || target >= list.length) return list;
-
-      const next = [...list];
-      [next[index], next[target]] = [next[target], next[index]];
-      return next;
-    });
-
-    this.sync();
-  }
-
-  /* =========================
-     SYNC CON LANDING SERVICE
-     ========================= */
+  /* -------------------------
+     SYNC
+  ------------------------- */
 
   private sync() {
     this.landings.updateSections(this.sections());
+  }
+
+
+  /* =========================
+     DEFAULT DATA
+     ========================= */
+
+  private defaultData(type: SectionType): any {
+    switch (type) {
+      case 'hero':
+        return {
+          title: 'Título',
+          subtitle: 'Subtítulo',
+          buttonText: 'Contáctanos',
+          whatsappNumber: '',
+          imageUrl: '',
+        };
+
+      case 'features':
+        return {
+          sectionTitle: 'Características',
+          items: [
+            { title: 'Feature 1', description: 'Descripción' },
+          ],
+        };
+
+      case 'cta':
+        return {
+          title: 'Llamado a la acción',
+          subtitle: '',
+          buttonText: 'Escríbenos',
+          whatsappNumber: '',
+        };
+    }
   }
 }

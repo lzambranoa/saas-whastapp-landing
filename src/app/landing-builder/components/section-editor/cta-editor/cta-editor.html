@@ -1,34 +1,35 @@
-<div>
-  <h4 class="font-semibold mb-4">CTA Section</h4>
+<div class="space-y-4">
 
-  <label class="block text-sm mb-1">Título</label>
   <input
-    class="w-full border rounded px-3 py-2 mb-3"
+    type="text"
+    class="input"
+    placeholder="Título"
     [value]="section.data.title"
     (input)="update('title', $any($event.target).value)"
   />
 
-  <label class="block text-sm mb-1">Subtítulo</label>
-  <textarea
-    class="w-full border rounded px-3 py-2 mb-3"
-    (input)="update('subtitle', $any($event.target).value)"
-  >{{ section.data.subtitle }}</textarea>
-
-  <label class="block text-sm mb-1">Texto del botón</label>
   <input
-    class="w-full border rounded px-3 py-2 mb-3"
+    type="text"
+    class="input"
+    placeholder="Subtítulo"
+    [value]="section.data.subtitle"
+    (input)="update('subtitle', $any($event.target).value)"
+  />
+
+  <input
+    type="text"
+    class="input"
+    placeholder="Texto del botón"
     [value]="section.data.buttonText"
     (input)="update('buttonText', $any($event.target).value)"
   />
 
-  <label class="block text-sm mb-1">Número de WhatsApp</label>
   <input
-    class="w-full border rounded px-3 py-2"
+    type="text"
+    class="input"
+    placeholder="WhatsApp"
     [value]="section.data.whatsappNumber"
     (input)="update('whatsappNumber', $any($event.target).value)"
   />
+
 </div>
-
-
-
-

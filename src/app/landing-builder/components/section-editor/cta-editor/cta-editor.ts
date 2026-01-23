@@ -1,27 +1,23 @@
 import { Component, Input } from '@angular/core';
 import { BuilderService } from '../../../services/builder.service';
-import { CtaProps } from '../../../models/cta-section.model';
+import { CtaProps } from '../../../models/section.model';
 
 @Component({
   selector: 'app-cta-editor',
-  imports: [],
   templateUrl: './cta-editor.html',
-  styleUrl: './cta-editor.css',
 })
 export class CtaEditor {
 
-  @Input() section!: any;
+  @Input({ required: true }) section!: {
+    id: string;
+    data: CtaProps;
+  };
 
   constructor(private builder: BuilderService) {}
 
-  update(key: keyof CtaProps, value: string) {
+  update<K extends keyof CtaProps>(key: K, value: CtaProps[K]) {
     this.builder.updateSection(this.section.id, {
-      buttonText: value
+      [key]: value,
     });
   }
-  
 }
-
-
-
-

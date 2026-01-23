@@ -2,35 +2,38 @@
 
   <!-- Canvas -->
   <div class="flex-1 overflow-y-auto bg-gray-50">
-       <!-- ADD SECTION BAR -->
-       <div class="flex gap-2 mb-6">
-        <button
-          class="px-4 py-2 bg-primary text-white rounded"
-          (click)="addHero()"
-        >
-          + Hero
-        </button>
-  
-        <button
-          class="px-4 py-2 bg-primary text-white rounded"
-          (click)="addFeatures()"
-        >
-          + Features
-        </button>
-  
-        <button
-          class="px-4 py-2 bg-primary text-white rounded"
-          (click)="addCta()"
-        >
-          + CTA
-        </button>
-      </div>
-    
+
+    <!-- ADD SECTION BAR -->
+    <div class="flex gap-2 mb-6 px-6 pt-6">
+      <button
+        class="px-4 py-2 bg-primary text-white rounded"
+        (click)="builder.addSection('hero')"
+      >
+        + Hero
+      </button>
+
+      <button
+        class="px-4 py-2 bg-primary text-white rounded"
+        (click)="builder.addSection('features')"
+      >
+        + Features
+      </button>
+
+      <button
+        class="px-4 py-2 bg-primary text-white rounded"
+        (click)="builder.addSection('cta')"
+      >
+        + CTA
+      </button>
+    </div>
+
+    <!-- SECTIONS -->
     <div
       cdkDropList
       (cdkDropListDropped)="onSectionDrop($event)"
       class="space-y-8 px-6 py-8"
     >
+
       @for (section of builder.sections(); track section.id) {
 
         <app-section-wrapper [section]="section">
@@ -38,29 +41,35 @@
           @switch (section.type) {
 
             @case ('hero') {
-              <app-hero-section
-                [title]="section.data.title"
-                [subtitle]="section.data.subtitle"
-                [buttonText]="section.data.buttonText"
-                [whatsappNumber]="section.data.whatsappNumber"
-                [imageUrl]="section.data.imageUrl"
-              />
+              @if (isHeroSection(section)) {
+                <app-hero-section
+                  [title]="section.data.title"
+                  [subtitle]="section.data.subtitle"
+                  [buttonText]="section.data.buttonText"
+                  [whatsappNumber]="section.data.whatsappNumber"
+                  [imageUrl]="section.data.imageUrl"
+                />
+              }
             }
 
             @case ('features') {
-              <app-features-section
-                [sectionTitle]="section.data.sectionTitle"
-                [items]="section.data.items"
-              />
+              @if (isFeaturesSection(section)) {
+                <app-features-section
+                  [sectionTitle]="section.data.sectionTitle"
+                  [items]="section.data.items"
+                />
+              }
             }
 
             @case ('cta') {
-              <app-cta-section
-                [title]="section.data.title"
-                [subtitle]="section.data.subtitle"
-                [buttonText]="section.data.buttonText"
-                [whatsappNumber]="section.data.whatsappNumber"
-              />
+              @if (isCtaSection(section)) {
+                <app-cta-section
+                  [title]="section.data.title"
+                  [subtitle]="section.data.subtitle"
+                  [buttonText]="section.data.buttonText"
+                  [whatsappNumber]="section.data.whatsappNumber"
+                />
+              }
             }
 
           }
@@ -68,6 +77,7 @@
         </app-section-wrapper>
 
       }
+
     </div>
   </div>
 
