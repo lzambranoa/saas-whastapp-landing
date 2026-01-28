@@ -11,6 +11,7 @@ import { CtaSection } from '../../components/cta-section/cta-section';
 import { EditorPanel } from '../../components/editor-panel/editor-panel';
 import { SectionWrapper } from '../../components/section-wrapper/section-wrapper';
 import { Section, HeroProps, FeaturesProps, CtaProps, } from '../../models/section.model';
+import { BuilderNavbar } from "../../components/builder-navbar/builder-navbar/builder-navbar";
 
 
 
@@ -24,8 +25,9 @@ import { Section, HeroProps, FeaturesProps, CtaProps, } from '../../models/secti
     FeaturesSection,
     CtaSection,
     EditorPanel,
-    SectionWrapper
-  ],
+    SectionWrapper,
+    BuilderNavbar
+],
   templateUrl: './build.html',
   styleUrl: './build.css',
 })

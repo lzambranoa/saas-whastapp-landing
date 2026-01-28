@@ -1,0 +1,44 @@
+<app-builder-navbar />
+<div class="min-h-screen bg-white">
+
+    <div class="space-y-16">
+        <h1>Preview Page </h1>
+  
+      @for (section of render.sections(); track section.id) {
+  
+        @switch (section.type) {
+  
+          @case ('hero') {
+            <app-hero-section
+              [title]="section.data.title"
+              [subtitle]="section.data.subtitle"
+              [buttonText]="section.data.buttonText"
+              [whatsappNumber]="section.data.whatsappNumber"
+              [imageUrl]="section.data.imageUrl"
+            />
+          }
+  
+          @case ('features') {
+            <app-features-section
+              [sectionTitle]="section.data.sectionTitle"
+              [items]="section.data.items"
+            />
+          }
+  
+          @case ('cta') {
+            <app-cta-section
+              [title]="section.data.title"
+              [subtitle]="section.data.subtitle"
+              [buttonText]="section.data.buttonText"
+              [whatsappNumber]="section.data.whatsappNumber"
+            />
+          }
+  
+        }
+  
+      }
+  
+    </div>
+  
+  </div>
+  

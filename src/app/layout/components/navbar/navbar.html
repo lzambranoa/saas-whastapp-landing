@@ -1,25 +1,15 @@
-<nav class="w-full px-6 py-4 flex justify-between items-center bg-white shadow">
-  <h1 class="text-xl font-bold text-primary">Landing SaaS</h1>
+<nav class="flex items-center justify-between px-6 py-4 bg-white border-b">
+  <div class="text-lg font-semibold">
+    Landing Builder
+  </div>
 
-  <div class="space-x-4">
+  <div class="flex gap-4">
     <a
-      routerLink="/dashboard/home"
-      routerLinkActive="text-primary font-semibold"
-      class="text-gray-600 hover:text-primary"
+      routerLink="/dashboard"
+      routerLinkActive="font-bold"
+      class="text-gray-700 hover:text-black"
     >
       Dashboard
     </a>
-
-    <a
-      *ngIf="landings.activeLanding()"
-      [routerLink]="['/dashboard/builder', landings.activeLanding()!.id]"
-      routerLinkActive="text-primary font-semibold"
-      class="text-gray-600 hover:text-primary"
-    >
-      Builder
-    </a>
   </div>
 </nav>
-
-  
-  

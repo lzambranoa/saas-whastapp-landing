@@ -1,16 +1,35 @@
+<app-navbar />
+
 <section class="p-10 text-center">
   <h2 class="text-4xl font-bold mb-4">Mis Landing Pages</h2>
-  <p class="text-gray-600">Aún no tienes landings creadas</p>
+
+  @if (landings.landings().length === 0) {
+    <p class="text-gray-600">Aún no tienes landings creadas</p>
+  } @else {
+    <p class="text-gray-600">
+      Tienes {{ landings.landings().length }} landing(s) creadas
+    </p>
+  }
 </section>
-<button class="bg-primary text-white px-4 py-2 rounded" (click)="createLanding()">
+
+<button
+  class="bg-primary text-white px-4 py-2 rounded"
+  (click)="createLanding()"
+>
   + Nueva Landing
 </button>
 
-<ul class="mt-4 space-y-2">
+<ul class="mt-6 space-y-2">
   @for (landing of landings.landings(); track landing.id) {
-  <li class="p-3 border rounded cursor-pointer hover:bg-gray-50" (click)="openLanding(landing.id)">
-    <div class="font-medium">{{ landing.name }}</div>
-    <div class="text-xs text-gray-500">
-      Última edición: {{ landing.updatedAt ? (landing.updatedAt | date:'short') : 'Fecha desconocida' }}
-    </div>
+    <li
+      class="p-3 border rounded cursor-pointer hover:bg-gray-50"
+      (click)="openLanding(landing.id)"
+    >
+      <div class="font-medium">{{ landing.name }}</div>
+      <div class="text-xs text-gray-500">
+        Última edición:
+        {{ landing.updatedAt ? (landing.updatedAt | date:'short') : 'Fecha desconocida' }}
+      </div>
+    </li>
   }
+</ul>

@@ -1,0 +1,23 @@
+<nav class="flex items-center justify-between px-6 py-3 bg-gray-900 text-white">
+  <div class="font-semibold">
+    Editor de Landings
+  </div>
+
+  <div class="flex gap-4">
+    <a
+      [routerLink]="['/builder', landingId()]"
+      routerLinkActive="underline"
+      class="hover:opacity-80"
+    >
+      Builder
+    </a>
+
+    <a
+      [routerLink]="['/builder', landingId(), '/preview']"
+      routerLinkActive="underline"
+      class="hover:opacity-80"
+    >
+      Preview
+    </a>
+  </div>
+</nav>
