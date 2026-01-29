@@ -70,6 +70,10 @@ export class BuildPage implements OnInit {
      ========================= */
 
   onSectionDrop(event: CdkDragDrop<Section[]>) {
+
+    if (this.builder.isPreview()) return;
+
+    
     if (event.previousIndex === event.currentIndex) return;
 
     const sections = [...this.builder.sections()];

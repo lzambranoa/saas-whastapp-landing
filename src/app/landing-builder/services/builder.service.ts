@@ -1,14 +1,22 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, signal, inject, computed } from '@angular/core';
 import { LandingsServices } from './landings.service';
 import { Section, SectionType } from '../models/section.model';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class BuilderService {
+
+  constructor(private router: Router) {}
 
   private landings = inject(LandingsServices);
 
   sections = signal<Section[]>([]);
   selectedSectionId = signal<string | null>(null);
+
+    /** 🔒 Estado Preview */
+  isPreview = computed(() =>
+    this.router.url.includes('/preview')
+  );
 
  
   /* =========================
@@ -27,6 +35,7 @@ export class BuilderService {
      ========================= */
 
   addSection(type: SectionType) {
+    if (!this.canEdit()) return;
     const section: Section = {
       id: crypto.randomUUID(),
       type,
@@ -42,6 +51,7 @@ export class BuilderService {
      ========================= */
 
   updateSection(id: string, patch: any) {
+    if (!this.canEdit()) return;
     this.sections.update(list =>
       list.map(section =>
         section.id === id
@@ -58,8 +68,11 @@ export class BuilderService {
      ========================= */
 
   selectSection(section: Section | null) {
+    if (!this.canEdit()) return;
     this.selectedSectionId.set(section ? section.id : null);
   }
+
+
 
   selectedSection(): Section | null {
     return this.sections().find(s => s.id === this.selectedSectionId()) ?? null;
@@ -98,6 +111,7 @@ export class BuilderService {
      ========================= */
 
   duplicateSection(section: Section) {
+    if (!this.canEdit()) return;
   const newSection: Section = {
     ...structuredClone(section),
     id: crypto.randomUUID(),
@@ -124,6 +138,7 @@ export class BuilderService {
      ========================= */
 
    deleteSection(section: Section) {
+    if (!this.canEdit()) return;
     this.sections.update(list =>
       list.filter(s => s.id !== section.id)
     );
@@ -172,5 +187,13 @@ export class BuilderService {
           whatsappNumber: '',
         };
     }
+  }
+
+   /* =========================
+     GUARDS
+  ========================= */
+
+  private canEdit(): boolean {
+    return !this.isPreview();
   }
 }
