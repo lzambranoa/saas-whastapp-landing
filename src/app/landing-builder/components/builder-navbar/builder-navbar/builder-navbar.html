@@ -1,23 +1,37 @@
-<nav class="flex items-center justify-between px-6 py-3 bg-gray-900 text-white">
-  <div class="font-semibold">
-    Editor de Landings
-  </div>
+<nav class="flex items-center justify-between px-6 py-3 border-b bg-white">
+  <!-- LEFT -->
+  <button
+    class="text-sm text-gray-600 hover:text-black"
+    (click)="goBack()"
+  >
+    ← Volver al Dashboard
+  </button>
 
-  <div class="flex gap-4">
-    <a
-      [routerLink]="['/builder', landingId()]"
-      routerLinkActive="underline"
-      class="hover:opacity-80"
+  <!-- CENTER -->
+  <div class="flex gap-2">
+    <button
+      class="px-4 py-1.5 rounded text-sm"
+      [class.bg-primary]="!isPreview"
+      [class.text-white]="!isPreview"
+      [class.border]="isPreview"
+      (click)="goEdit()"
     >
-      Builder
-    </a>
+      Editar
+    </button>
 
-    <a
-      [routerLink]="['/builder', landingId(), '/preview']"
-      routerLinkActive="underline"
-      class="hover:opacity-80"
+    <button
+      class="px-4 py-1.5 rounded text-sm"
+      [class.bg-primary]="isPreview"
+      [class.text-white]="isPreview"
+      [class.border]="!isPreview"
+      (click)="goPreview()"
     >
       Preview
-    </a>
+    </button>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="text-xs text-gray-400">
+    Landing Builder
   </div>
 </nav>
